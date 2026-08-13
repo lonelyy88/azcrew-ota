@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تواصل معنا</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--ink:#0b2447}
+  html,body{min-height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#e8ecf6;line-height:1.7;overflow-x:hidden;background:#07070f}
+  .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .mesh{position:absolute;inset:-20%;background:
+    radial-gradient(38% 42% at 22% 18%, rgba(147,51,234,.42), transparent 70%),
+    radial-gradient(34% 38% at 80% 12%, rgba(56,189,248,.34), transparent 70%),
+    radial-gradient(40% 46% at 72% 82%, rgba(236,72,153,.30), transparent 70%),
+    radial-gradient(36% 40% at 18% 78%, rgba(99,102,241,.36), transparent 70%);
+    animation:mesh 22s ease-in-out infinite alternate}
+  @keyframes mesh{from{transform:translate(-2%,-2%) rotate(-2deg) scale(1)}to{transform:translate(2%,2%) rotate(2deg) scale(1.06)}}
+  .gridline{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:56px 56px;animation:grid 30s linear infinite}
+  @keyframes grid{to{background-position:56px 56px}}
+  .particle{position:absolute;border-radius:50%;background:#fff;opacity:0;animation:floatP linear infinite}
+  @keyframes floatP{0%{transform:translateY(0) scale(.4);opacity:0}12%{opacity:.8}88%{opacity:.6}100%{transform:translateY(-105vh) scale(1);opacity:0}}
+  .shell{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:46px 20px}
+  .brand{text-align:center;margin-bottom:28px}
+  .logo{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:20px;position:relative;margin-bottom:16px;animation:pop .7s cubic-bezier(.2,.9,.3,1.4) both}
+  .logo .ico{width:100%;height:100%;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(135deg,#7c3aed,#db2777);box-shadow:0 16px 40px -10px rgba(124,58,237,.7)}
+  .logo::before{content:"";position:absolute;inset:-3px;border-radius:24px;background:conic-gradient(from var(--ang),#7c3aed,#22d3ee,#f472b6,#7c3aed);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:2px;animation:spin 4s linear infinite}
+  @property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+  @keyframes spin{to{--ang:360deg}}
+  @keyframes pop{from{opacity:0;transform:scale(.6) translateY(24px)}to{opacity:1;transform:none}}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.3px;
+    background:linear-gradient(90deg,#f4f4f5,#c4b5fd,#93c5fd,#f4f4f5);background-size:300% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 6s linear infinite}
+  @keyframes shine{to{background-position:300% center}}
+  .sub{color:#8b93a7;font-size:14px;margin-top:8px;animation:fadeUp .8s .15s both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .card{position:relative;background:rgba(17,19,34,.72);border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:30px;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.8);overflow:hidden;transform-style:preserve-3d;animation:fadeUp .8s .25s both}
+  .card::before{content:"";position:absolute;inset:0;border-radius:24px;background:radial-gradient(520px circle at var(--mx) var(--my),rgba(124,58,237,.22),transparent 42%);opacity:0;transition:opacity .4s}
+  .card:hover::before{opacity:1}
+  .card::after{content:"";position:absolute;inset:0;border-radius:24px;pointer-events:none;
+    background:linear-gradient(110deg,transparent,rgba(255,255,255,.06) 45%,transparent);transform:translateX(-120%);animation:sheen 5.5s ease-in-out infinite}
+  @keyframes sheen{0%,45%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+  .inp{position:relative;margin-bottom:20px}
+  .inp input,.inp textarea{width:100%;padding:17px 16px 7px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(10,12,24,.72);font:inherit;font-size:15px;color:#e8ecf6;outline:none;transition:.25s;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+  .inp textarea{min-height:126px;resize:vertical;padding-top:24px}
+  .inp label{position:absolute;top:14px;right:16px;font-size:14px;color:#6d7590;pointer-events:none;transition:.22s cubic-bezier(.2,.8,.2,1);font-weight:600}
+  .inp input:focus,.inp textarea:focus{border-color:#7c3aed;background:rgba(14,16,32,.9);box-shadow:0 0 0 4px rgba(124,58,237,.18),0 10px 30px -14px rgba(124,58,237,.5)}
+  .inp.filled label,.inp input:focus~label,.inp textarea:focus~label{top:5px;font-size:11px;color:#c4b5fd}
+  .bar{height:3px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#7c3aed,#22d3ee);transition:width .2s}
+  .counter{display:flex;justify-content:space-between;align-items:center;margin-top:5px;font-size:11.5px;color:#6d7590}
+  .btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:none;border-radius:15px;padding:16px;font:inherit;font-weight:800;font-size:16px;color:#fff;cursor:pointer;margin-top:6px;
+    background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);background-size:180% 180%;box-shadow:0 16px 38px -12px rgba(124,58,237,.65);overflow:hidden;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s}
+  .btn:hover{box-shadow:0 20px 48px -12px rgba(219,39,119,.7)}
+  .btn:active{transform:scale(.97)}
+  .btn .spin{display:none;width:19px;height:19px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:rot .7s linear infinite}
+  .btn.loading .spin{display:inline-block}
+  .btn.loading .lbl{opacity:.85}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);animation:rip .6s ease-out;pointer-events:none}
+  @keyframes rip{to{transform:scale(4);opacity:0}}
+  .note{display:none;text-align:center;margin-top:16px;font-weight:700;font-size:14px;border-radius:13px;padding:13px}
+  .note.ok{color:#4ade80;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25)}
+  .note.err{color:#fca5a5;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25)}
+  .check{display:none;margin:8px auto 0;width:52px;height:52px}
+  .check circle{stroke:#4ade80;stroke-width:3;fill:none;stroke-dasharray:160;stroke-dashoffset:160;animation:draw .6s ease forwards}
+  .check path{stroke:#4ade80;stroke-width:3.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .45s ease .55s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  footer{position:relative;z-index:1;text-align:center;color:#5c6478;font-size:12.5px;margin:26px 0 8px}
+  .signature{text-align:center;margin-top:30px;position:relative;z-index:1;animation:fadeUp 1s .6s both}
+  .signature .lbl{display:block;font-size:11px;font-weight:700;letter-spacing:4px;color:#6d7590;margin-bottom:10px;text-transform:uppercase}
+  .abdullah-signature{font-family:'Alex Brush',cursive;font-size:58px;line-height:1.1;display:inline-block;
+    background:linear-gradient(180deg,#67e8f9 0%,#818cf8 55%,#c084fc 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 18px rgba(129,140,248,.45));
+    animation:sign 2s cubic-bezier(.2,.8,.2,1) 1.4s both;position:relative}
+  @keyframes sign{from{opacity:0;letter-spacing:14px;filter:blur(10px) drop-shadow(0 0 0 rgba(129,140,248,0))}to{opacity:1;letter-spacing:2px;filter:blur(0) drop-shadow(0 0 18px rgba(129,140,248,.45))}}
+  .sig-line{position:relative;width:200px;height:2px;margin:14px auto 0;border-radius:2px;overflow:visible}
+  .sig-line svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .sig-line path{fill:none;stroke:url(#sigGrad);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:300;stroke-dashoffset:300;animation:drawS 1.1s ease-out 2.6s forwards}
+  .sig-line .dot{position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:#c084fc;box-shadow:0 0 12px 3px rgba(192,132,252,.8);opacity:0;animation:dotPop .5s ease-out 3.6s forwards}
+  .sig-line .dot:first-child{left:0}.sig-line .dot:last-child{right:0}
+  @keyframes drawS{to{stroke-dashoffset:0}}
+  @keyframes dotPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+  .sig-spark{position:absolute;font-size:0;animation:none}
+  .sig-spark i{position:absolute;font-size:14px;color:#c4b5fd;opacity:0;animation:spark 2.4s ease-in-out infinite;font-style:normal}
+  .sig-spark i:nth-child(1){left:-34px;top:4px;animation-delay:2.8s}
+  .sig-spark i:nth-child(2){right:-30px;top:-6px;animation-delay:3.4s}
+  .sig-spark i:nth-child(3){left:-14px;bottom:-14px;animation-delay:3s;font-size:10px}
+  .sig-spark i:nth-child(4){right:-8px;bottom:-18px;animation-delay:3.8s;font-size:10px}
+  @keyframes spark{0%,60%,100%{opacity:0;transform:translateY(6px) scale(.6)}30%{opacity:1;transform:translateY(0) scale(1)}45%{opacity:.9;transform:translateY(-4px) scale(.9)}}
+  @media(max-width:520px){.card{padding:22px 18px}.shell{padding-top:30px}}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="mesh"></div>
+  <div class="gridline"></div>
+</div>
+
+<div class="shell">
+  <div class="brand">
+    <div class="logo"><div class="ico">✦</div></div>
+    <h1>تواصل معنا</h1>
+    <div class="sub">أرسل رسالتك وسنرد عليك بأقرب وقت</div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="inp"><input id="name" maxlength="80" autocomplete="name"><label>الاسم</label></div>
+    <div class="inp"><input id="phone" type="tel" maxlength="20" inputmode="tel" autocomplete="tel"><label>رقم الجوال</label></div>
+    <div class="inp"><input id="email" type="email" maxlength="120" inputmode="email" autocomplete="email"><label>الإيميل</label></div>
+    <div class="inp"><textarea id="message" maxlength="2000"></textarea><label>رسالتك *</label>
+      <div class="bar"><i id="pbar"></i></div>
+      <div class="counter"><span id="cnt">0 / 2000</span><span>مطلوب</span></div>
+    </div>
+    <button class="btn" id="send"><span class="lbl">إرسال الرسالة</span><span class="spin"></span></button>
+    <svg class="check" id="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l8 8 15-16"/></svg>
+    <div class="note ok" id="okMsg">تم استلام رسالتك بنجاح</div>
+    <div class="note err" id="errMsg"></div>
+  </div>
+
+  <div class="signature">
+    <span class="lbl">Designed with passion</span>
+    <span class="abdullah-signature"><span class="sig-spark"><i>✦</i><i>✦</i><i>✦</i><i>✦</i></span>Abdullah</span>
+    <div class="sig-line">
+      <svg viewBox="0 0 200 10"><defs><linearGradient id="sigGrad" x1="0" x2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset=".5" stop-color="#818cf8"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs><path d="M2 6 Q 50 2 100 6 T 198 5"/></svg>
+      <i class="dot"></i><i class="dot"></i>
+    </div>
+  </div>
+
+  <footer>جميع الحقوق محفوظة © 2026</footer>
+</div>
+
+<script>
+(function(){
+  var bg = document.querySelector(".bg");
+  for (var i = 0; i < 18; i++){
+    var p = document.createElement("i");
+    p.className = "particle";
+    var s = Math.random() * 5 + 2;
+    p.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + Math.random() * 100 + "%;bottom:-10px;" +
+      "animation-duration:" + (Math.random() * 12 + 9) + "s;animation-delay:" + Math.random() * 14 + "s";
+    bg.appendChild(p);
+  }
+  var card = document.getElementById("card");
+  card.addEventListener("mousemove", function(e){
+    var r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    card.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+  card.addEventListener("mousemove", function(e){
+    var r = card.getBoundingClientRect();
+    var dx = ((e.clientX - r.left) / r.width - .5) * 3;
+    var dy = ((e.clientY - r.top) / r.height - .5) * 3;
+    card.style.transform = "perspective(900px) rotateY(" + dx + "deg) rotateX(" + (-dy) + "deg)";
+  });
+  card.addEventListener("mouseleave", function(){ card.style.transform = ""; });
+
+  var btn = document.getElementById("send");
+  btn.addEventListener("mousemove", function(e){
+    var r = btn.getBoundingClientRect();
+    var mx = (e.clientX - r.left - r.width / 2) * .18;
+    var my = (e.clientY - r.top - r.height / 2) * .22;
+    btn.style.transform = "translate(" + mx + "px," + my + "px)";
+  });
+  btn.addEventListener("mouseleave", function(){ btn.style.transform = ""; });
+  btn.addEventListener("click", function(e){
+    var r = btn.getBoundingClientRect();
+    var s = Math.max(r.width, r.height);
+    var rip = document.createElement("span");
+    rip.className = "ripple";
+    rip.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + (e.clientX - r.left - s / 2) + "px;top:" + (e.clientY - r.top - s / 2) + "px";
+    btn.appendChild(rip);
+    setTimeout(function(){ rip.remove(); }, 600);
+  });
+
+  function sync(id){
+    var el = document.getElementById(id);
+    el.classList.toggle("filled", el.value.trim().length > 0);
+  }
+  ["name","phone","email"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", function(){ sync(id); });
+  });
+  var msg = document.getElementById("message");
+  msg.addEventListener("input", function(){
+    sync("message");
+    document.getElementById("cnt").textContent = msg.value.length + " / 2000";
+    var pc = Math.min(100, msg.value.length / 2000 * 100);
+    document.getElementById("pbar").style.width = pc + "%";
+  });
+
+  btn.onclick = function(){
+    var ok = document.getElementById("okMsg"), err = document.getElementById("errMsg"),
+        check = document.getElementById("check");
+    var body = {
+      name: document.getElementById("name").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      message: msg.value.trim()
+    };
+    ok.style.display = "none"; err.style.display = "none"; check.style.display = "none";
+    if (body.message.length < 3){ err.textContent = "اكتب رسالتك أولًا."; err.style.display = "block"; return; }
+    btn.classList.add("loading"); btn.disabled = true;
+    fetch("https://charming-inspiration-production-fe70.up.railway.app/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function(r){
+      if (r.ok){
+        ["name","phone","email","message"].forEach(function(id){
+          var el = document.getElementById(id); el.value = ""; sync(id);
+        });
+        document.getElementById("cnt").textContent = "0 / 2000";
+        document.getElementById("pbar").style.width = "0";
+        check.style.display = "block";
+        check.style.animation = "none"; check.offsetHeight; check.style.animation = "";
+        ok.style.display = "block";
+      } else {
+        return r.json().then(function(j){ throw new Error(j.error || "تعذر الإرسال"); });
+      }
+    }).catch(function(e){
+      err.textContent = e.message || "تعذر الإرسال. حاول مرة أخرى لاحقًا.";
+      err.style.display = "block";
+    }).then(function(){
+      btn.classList.remove("loading"); btn.disabled = false;
+    });
+  };
+})();
+</script>
+</body>
+</html>
