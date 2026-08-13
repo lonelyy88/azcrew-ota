@@ -19,17 +19,9 @@
   .hero{padding:46px 0 40px;text-align:center;color:#fff;background:linear-gradient(160deg,var(--brand2) 0%,var(--brand) 78%,#0ea5e9 130%)}
   .hero h1{font-size:clamp(26px,4.5vw,40px);font-weight:800;margin-bottom:10px}
   .hero p{color:#d7e5fb;font-size:16px;max-width:560px;margin:0 auto 24px}
-  .search{max-width:520px;margin:0 auto;position:relative}
-  .search input{width:100%;padding:15px 20px;border-radius:14px;border:none;font:inherit;font-size:15px;box-shadow:0 10px 30px rgba(2,20,60,.25);outline:none}
   section{padding:40px 0}
   .sec-title{font-size:21px;font-weight:800;margin-bottom:22px;display:flex;align-items:center;gap:10px}
   .sec-title::before{content:"";width:5px;height:24px;border-radius:4px;background:var(--brand)}
-  .topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
-  .topic{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;transition:.2s;text-align:center}
-  .topic:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,36,71,.08);border-color:#b9d2f5}
-  .topic .ico{font-size:26px;margin-bottom:8px}
-  .topic b{font-size:15px;display:block;margin-bottom:4px}
-  .topic span{font-size:12.5px;color:var(--muted)}
   .faq-item{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
   .faq-q{width:100%;text-align:right;background:none;border:none;padding:16px 18px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
   .faq-q .chev{transition:.25s;color:var(--brand);font-size:13px}
@@ -68,20 +60,8 @@
   <div class="shell">
     <h1>كيف نقدر نساعدك؟</h1>
     <p>إذا واجهت مشكلة أو كان عندك استفسار، أرسل لنا رسالة وسنرد عليك بأقرب وقت.</p>
-    <div class="search"><input id="q" placeholder="اكتب استفسارك... (مثال: تسجيل الدخول)" oninput="filterFAQ(this.value)"></div>
   </div>
 </div>
-
-<section>
-  <div class="shell">
-    <div class="topics">
-      <div class="topic" onclick="jump('#f-login')"><div class="ico">🔑</div><b>تسجيل الدخول</b><span>مشاكل الدخول وكلمة المرور</span></div>
-      <div class="topic" onclick="jump('#f-requests')"><div class="ico">📋</div><b>الطلبات</b><span>الإجازات، الأذونات، الشكاوى</span></div>
-      <div class="topic" onclick="jump('#f-app')"><div class="ico">📲</div><b>التطبيق</b><span>التثبيت والأجهزة والإشعارات</span></div>
-      <div class="topic" onclick="jump('#f-cal')"><div class="ico">📅</div><b>التقويم</b><span>المناوبات وحالة التواجد</span></div>
-    </div>
-  </div>
-</section>
 
 <section id="faq" style="padding-top:8px">
   <div class="shell">
@@ -151,13 +131,6 @@
 
 <script>
 function toggleFAQ(btn){ btn.closest(".faq-item").classList.toggle("open"); }
-function jump(id){ var el = document.querySelector(id); if(el) el.scrollIntoView({behavior:"smooth"}); }
-function filterFAQ(v){
-  v = v.trim();
-  document.querySelectorAll(".faq-item").forEach(function(it){
-    it.style.display = (!v || it.textContent.includes(v)) ? "" : "none";
-  });
-}
 document.getElementById("send").onclick = async function(){
   var btn = this, ok = document.getElementById("okMsg"), err = document.getElementById("errMsg");
   var message = document.getElementById("message").value.trim();
