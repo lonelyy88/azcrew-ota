@@ -58,6 +58,10 @@
   .inp input:focus,.inp textarea:focus{border-color:#8b5cf6;background:rgba(12,14,32,.85);box-shadow:0 0 0 4px rgba(139,92,246,.16),0 0 26px -6px rgba(139,92,246,.6)}
   .inp.filled label,.inp:focus-within label{top:4px;font-size:10.5px;color:#a78bfa}
   .inp.filled .ic{color:#a78bfa}
+  .ferr{display:none;font-size:11px;color:#fda4af;font-weight:600;margin-top:4px}
+  .inp.bad input,.inp.bad textarea{border-color:#f43f5e !important;box-shadow:0 0 0 4px rgba(244,63,94,.15),0 0 20px -8px rgba(244,63,94,.5) !important}
+  .inp.bad .ferr{display:block}
+  .inp.bad label{color:#fda4af}
   .track{height:4px;border-radius:4px;background:rgba(255,255,255,.07);margin-top:4px;overflow:hidden}
   .track i{display:block;height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#8b5cf6,#22d3ee,#f472b6);transition:width .2s;box-shadow:0 0 12px rgba(139,92,246,.7)}
   .counter{display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:#6d7590}
@@ -152,13 +156,13 @@
 
   <div class="card" id="card">
     <div class="glare" id="glare"></div>
-    <div class="inp"><span class="ic">◈</span><input id="name" maxlength="80" autocomplete="name"><label>الاسم</label></div>
-    <div class="inp"><span class="ic">◉</span><input id="phone" type="tel" maxlength="20" inputmode="tel" autocomplete="tel"><label>رقم الجوال</label></div>
-    <div class="inp"><span class="ic">✉</span><input id="email" type="email" maxlength="120" inputmode="email" autocomplete="email"><label>الإيميل</label></div>
+    <div class="inp"><span class="ic">◈</span><input id="name" maxlength="80" autocomplete="name"><label>الاسم *</label><small class="ferr"></small></div>
+    <div class="inp"><span class="ic">◉</span><input id="phone" type="tel" maxlength="20" inputmode="tel" autocomplete="tel"><label>رقم الجوال *</label><small class="ferr"></small></div>
+    <div class="inp"><span class="ic">✉</span><input id="email" type="email" maxlength="120" inputmode="email" autocomplete="email"><label>الإيميل *</label><small class="ferr"></small></div>
     <div class="inp"><span class="ic">❋</span><textarea id="message" maxlength="2000"></textarea><label>رسالتك *</label>
       <div class="track"><i id="pbar"></i></div>
       <div class="counter"><span id="cnt">0 / 2000</span><span>مطلوب</span></div>
-    </div>
+      <small class="ferr"></small></div>
     <button class="btn" id="send"><span class="lbl">إرسال الرسالة</span><span class="spin"></span></button>
     <svg class="check" id="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l8 8 15-16"/></svg>
     <div class="note ok" id="okMsg">تم استلام رسالتك بنجاح</div>
@@ -239,30 +243,96 @@
   }
 
   function sync(id){ document.getElementById(id).classList.toggle("filled", document.getElementById(id).value.trim().length > 0); }
-  ["name","phone","email"].forEach(function(id){ document.getElementById(id).addEventListener("input", function(){ sync(id); }); });
+  ["name","phone","email"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", function(){
+      sync(id);
+      var inp = document.getElementById(id).closest(".inp");
+      if (inp.classList.contains("bad")){ inp.classList.remove("bad"); inp.querySelector(".ferr").textContent = ""; }
+    });
+  });
   var msg = document.getElementById("message");
   msg.addEventListener("input", function(){
     sync("message");
     document.getElementById("cnt").textContent = msg.value.length + " / 2000";
     var pc = Math.min(100, msg.value.length / 2000 * 100);
     document.getElementById("pbar").style.width = pc + "%";
+    var inp = document.getElementById("message").closest(".inp");
+    if (inp.classList.contains("bad")){ inp.classList.remove("bad"); inp.querySelector(".ferr").textContent = ""; }
   });
+
+  var PHONE_RE = /^[+]?[\d\s-]{9,15}$/;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function mark(id, okMsg, text){
+    var inp = document.getElementById(id).closest(".inp");
+    var ferr = inp.querySelector(".ferr");
+    if (okMsg){ inp.classList.remove("bad"); ferr.textContent = ""; return true; }
+    inp.classList.add("bad"); ferr.textContent = text || "الرجاء تعبئة الحقل";
+    return false;
+  }
+
+  function validate(){
+    var name = document.getElementById("name").value.trim();
+    var phone = document.getElementById("phone").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var message = msg.value.trim();
+    var ok = true;
+    ok = mark("name", name.length >= 2, "أدخل الاسم (حرفان على الأقل)") && ok;
+    ok = mark("phone", PHONE_RE.test(phone), "أدخل رقم جوال صحيح (9-15 رقم)") && ok;
+    ok = mark("email", EMAIL_RE.test(email), "أدخل إيميل صحيح") && ok;
+    ok = mark("message", message.length >= 10, "اكتب رسالتك (10 أحرف على الأقل)") && ok;
+    if (!ok){
+      var first = document.querySelector(".inp.bad input, .inp.bad textarea");
+      if (first) first.focus();
+    }
+    return ok;
+  }
+
+  function send(body){
+    return fetch("https://charming-inspiration-production-fe70.up.railway.app/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+      .then(function(r){ if (r.ok) return true; return r.json().then(function(j){ throw new Error(j.error || "تعذر الإرسال"); }); });
+  }
 
   btn.onclick = function(){
     var ok = document.getElementById("okMsg"), err = document.getElementById("errMsg"), check = document.getElementById("check");
+    err.style.display = "none"; check.style.display = "none"; ok.style.display = "none";
+    if (!validate()) return;
     var body = { name: document.getElementById("name").value.trim(), phone: document.getElementById("phone").value.trim(), email: document.getElementById("email").value.trim(), message: msg.value.trim() };
-    ok.style.display = "none"; err.style.display = "none"; check.style.display = "none";
-    if (body.message.length < 3){ err.textContent = "اكتب رسالتك أولًا."; err.style.display = "block"; return; }
     btn.classList.add("loading"); btn.disabled = true;
-    fetch("https://charming-inspiration-production-fe70.up.railway.app/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-      .then(function(r){ if (r.ok) return true; return r.json().then(function(j){ throw new Error(j.error || "تعذر الإرسال"); }); })
+    send(body)
       .then(function(){
         ["name","phone","email","message"].forEach(function(id){ var el = document.getElementById(id); el.value = ""; sync(id); });
         document.getElementById("cnt").textContent = "0 / 2000"; document.getElementById("pbar").style.width = "0";
         check.style.display = "block"; check.style.animation = "none"; check.offsetHeight; check.style.animation = "";
         ok.style.display = "block"; confetti();
       })
-      .catch(function(e){ err.textContent = e.message || "تعذر الإرسال. حاول مرة أخرى لاحقًا."; err.style.display = "block"; })
+      .catch(function(e){
+        var network = !e || !e.message || e.name === "TypeError" || /load|network|fetch/i.test(String(e.message));
+        if (network){
+          err.textContent = "الخادم يستيقظ الآن... جاري المحاولة تلقائيًا";
+          err.style.display = "block";
+          var attempts = 0;
+          return new Promise(function(res, rej){
+            (function retry(){
+              attempts++;
+              if (attempts > 12){ rej(new Error("done")); return; }
+              setTimeout(function(){
+                send(body).then(res).catch(function(){ retry(); });
+              }, 4000);
+            })();
+          }).then(function(){
+            ["name","phone","email","message"].forEach(function(id){ var el = document.getElementById(id); el.value = ""; sync(id); });
+            document.getElementById("cnt").textContent = "0 / 2000"; document.getElementById("pbar").style.width = "0";
+            check.style.display = "block"; check.style.animation = "none"; check.offsetHeight; check.style.animation = "";
+            ok.style.display = "block"; confetti();
+          }).catch(function(){
+            err.textContent = "تعذر الاتصال بالخادم الآن. تحقق من اتصالك وجرب لاحقًا.";
+            err.style.display = "block";
+          });
+        }
+        err.textContent = e.message || "تعذر الإرسال. حاول مرة أخرى لاحقًا.";
+        err.style.display = "block";
+      })
       .then(function(){ btn.classList.remove("loading"); btn.disabled = false; });
   };
 
